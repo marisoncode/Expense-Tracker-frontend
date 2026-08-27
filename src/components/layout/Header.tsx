@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Moon,
   Sun,
@@ -9,11 +9,20 @@ import {
   Calendar as CalIcon,
   ChevronLeft,
   ChevronRight,
-  Plus
+  Plus,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { format, addMonths, subMonths } from 'date-fns';
 import clsx from 'clsx';
+import {
+  isSoundEnabled,
+  toggleSoundEnabled,
+  playClickSound,
+  playToggleSound,
+  playPopSound
+} from '../../utils/sound';
 
 export type NavTab = 'overview' | 'charts' | 'transactions' | 'calendar';
 
@@ -33,6 +42,12 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAddExpense
 }) => {
   const { theme, toggleTheme } = useTheme();
+  const [soundOn, setSoundOn] = useState<boolean>(isSoundEnabled());
+
+  const handleSoundToggle = () => {
+    const next = toggleSoundEnabled();
+    setSoundOn(next);
+  };
 
   const navItems: { key: NavTab; label: string; icon: React.FC<{ className?: string }> }[] = [
     { key: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -68,7 +83,10 @@ export const Header: React.FC<HeaderProps> = ({
               return (
                 <button
                   key={item.key}
-                  onClick={() => onTabChange(item.key)}
+                  onClick={() => {
+                    playClickSound();
+                    onTabChange(item.key);
+                  }}
                   className={clsx(
                     "h-9 px-4 rounded-xl text-xs font-black flex items-center gap-2 transition-all outline-none",
                     isActive
@@ -83,26 +101,35 @@ export const Header: React.FC<HeaderProps> = ({
             })}
           </nav>
 
-          {/* Right Actions: Month Navigator + Add CTA + Theme Toggle */}
+          {/* Right Actions: Month Navigator + Add CTA + Sound Toggle + Theme Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2.5">
             {/* Month Switcher */}
             <div className="flex items-center h-8 sm:h-10 px-0.5 sm:px-1 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark">
               <button
-                onClick={() => onMonthChange(subMonths(currentMonth, 1))}
+                onClick={() => {
+                  playToggleSound();
+                  onMonthChange(subMonths(currentMonth, 1));
+                }}
                 className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg sm:rounded-xl hover:shadow-neu-pressed text-gray-600 dark:text-gray-400 transition-all outline-none"
                 title="Previous Month"
               >
                 <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
               <button
-                onClick={() => onMonthChange(new Date())}
+                onClick={() => {
+                  playClickSound();
+                  onMonthChange(new Date());
+                }}
                 className="px-1.5 sm:px-2.5 text-[11px] sm:text-xs font-black text-gray-800 dark:text-gray-100 uppercase tracking-wide hover:text-indigo-500 transition-colors whitespace-nowrap"
                 title="Click for Current Month"
               >
                 {format(currentMonth, 'MMM yy')}
               </button>
               <button
-                onClick={() => onMonthChange(addMonths(currentMonth, 1))}
+                onClick={() => {
+                  playToggleSound();
+                  onMonthChange(addMonths(currentMonth, 1));
+                }}
                 className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg sm:rounded-xl hover:shadow-neu-pressed text-gray-600 dark:text-gray-400 transition-all outline-none"
                 title="Next Month"
               >
@@ -112,7 +139,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Quick Add Button */}
             <button
-              onClick={onOpenAddExpense}
+              onClick={() => {
+                playPopSound();
+                onOpenAddExpense();
+              }}
               className="h-8 sm:h-10 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-xs font-black text-indigo-500 flex items-center gap-1 sm:gap-1.5 transition-all outline-none shrink-0"
               title="Log Expense"
             >
@@ -120,9 +150,31 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="hidden xs:inline sm:inline">Add</span>
             </button>
 
+            {/* Sound Toggle */}
+            <button
+              onClick={handleSoundToggle}
+              className={clsx(
+                "w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl sm:rounded-2xl transition-all outline-none shrink-0",
+                soundOn
+                  ? "shadow-neu-flat dark:shadow-neu-flat-dark text-indigo-500 hover:shadow-neu-pressed"
+                  : "shadow-neu-pressed dark:shadow-neu-pressed-dark text-gray-400 opacity-70"
+              )}
+              title={soundOn ? "Sound Effects Enabled (Click to Mute)" : "Sound Effects Muted (Click to Enable)"}
+              aria-label="Toggle Sound Effects"
+            >
+              {soundOn ? (
+                <Volume2 className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+              ) : (
+                <VolumeX className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-400" />
+              )}
+            </button>
+
             {/* Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              onClick={() => {
+                playToggleSound();
+                toggleTheme();
+              }}
               className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed dark:hover:shadow-neu-pressed-dark transition-all outline-none shrink-0"
               aria-label="Toggle theme"
             >

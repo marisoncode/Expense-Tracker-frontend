@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import { MonthlyComparisonTable } from './MonthlyComparisonTable';
+import { playClickSound, playToggleSound, playPopSound } from '../../utils/sound';
 
 interface ExpenseChartsProps {
   userId: number;
@@ -229,7 +230,10 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
             ).map((mode) => (
               <button
                 key={mode.key}
-                onClick={() => setFilterMode(mode.key)}
+                onClick={() => {
+                  playClickSound();
+                  setFilterMode(mode.key);
+                }}
                 className={clsx(
                   "px-3 py-1.5 sm:py-2 rounded-xl text-xs font-black text-center transition-all outline-none whitespace-nowrap",
                   filterMode === mode.key
@@ -244,7 +248,10 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
 
           {/* Direct PDF Export of Active Filter */}
           <button
-            onClick={() => handleExportActiveFilter('pdf')}
+            onClick={() => {
+              playPopSound();
+              handleExportActiveFilter('pdf');
+            }}
             className="h-8 sm:h-10 px-3 sm:px-3.5 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-xs font-black text-rose-500 flex items-center justify-center gap-1.5 transition-all outline-none shrink-0"
             title={`Download PDF Statement for ${activePeriodText}`}
           >
@@ -260,7 +267,10 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
         <div className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2 flex-wrap">
           {filterMode !== 'range' && (
             <button
-              onClick={handlePrev}
+              onClick={() => {
+                playToggleSound();
+                handlePrev();
+              }}
               className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-gray-600 dark:text-gray-400 outline-none transition-all"
               title="Previous"
             >
@@ -277,7 +287,10 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
 
           {filterMode !== 'range' && (
             <button
-              onClick={handleNext}
+              onClick={() => {
+                playToggleSound();
+                handleNext();
+              }}
               className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-gray-600 dark:text-gray-400 outline-none transition-all"
               title="Next"
             >

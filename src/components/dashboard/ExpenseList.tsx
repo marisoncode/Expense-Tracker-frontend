@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { CategoryIcon } from './CategoryIcon';
 import { ExportModal } from './ExportModal';
+import { playClickSound, playPopSound, playDeleteSound } from '../../utils/sound';
 
 interface ExpenseListProps {
   userId: number;
@@ -73,6 +74,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
     try {
       setDeletingId(id);
       await apiClient.delete(`/expenses/${id}`);
+      playDeleteSound();
       onExpensesChanged();
       fetchExpenses();
     } catch (error) {
@@ -104,7 +106,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
-                onClick={() => setIsExportOpen(true)}
+                onClick={() => {
+                  playPopSound();
+                  setIsExportOpen(true);
+                }}
                 className="flex-1 sm:flex-none h-8 sm:h-9 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-[11px] sm:text-xs font-bold text-rose-500 flex items-center justify-center gap-1.5 transition-all outline-none"
                 title="Export Statement (PDF / CSV)"
               >
@@ -112,7 +117,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
                 <span>Export</span>
               </button>
               <button
-                onClick={onOpenAddExpense}
+                onClick={() => {
+                  playPopSound();
+                  onOpenAddExpense();
+                }}
                 className="flex-1 sm:flex-none h-8 sm:h-9 px-3 sm:px-4 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-[11px] sm:text-xs font-black text-indigo-500 flex items-center justify-center gap-1.5 transition-all outline-none"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -154,7 +162,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
           {/* Category Pills Filter */}
           <div className="flex gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-2 mb-2.5">
             <button
-              onClick={() => onCategoryFilterChange && onCategoryFilterChange('')}
+              onClick={() => {
+                playClickSound();
+                onCategoryFilterChange && onCategoryFilterChange('');
+              }}
               className={`h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold shrink-0 transition-all outline-none flex items-center ${
                 !categoryFilter
                   ? 'shadow-neu-pressed dark:shadow-neu-pressed-dark text-indigo-500 font-black'
@@ -168,7 +179,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
               return (
                 <button
                   key={cat.name}
-                  onClick={() => onCategoryFilterChange && onCategoryFilterChange(isSelected ? '' : cat.name)}
+                  onClick={() => {
+                    playClickSound();
+                    onCategoryFilterChange && onCategoryFilterChange(isSelected ? '' : cat.name);
+                  }}
                   className={`h-7 sm:h-8 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all outline-none ${
                     isSelected
                       ? 'shadow-neu-pressed dark:shadow-neu-pressed-dark text-indigo-500 font-black'
@@ -195,7 +209,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
               <p className="text-xs font-bold text-gray-700 dark:text-gray-300">No transactions match your filter.</p>
               <p className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5 mb-2.5">Try clearing filters or add a new expense.</p>
               <button
-                onClick={onOpenAddExpense}
+                onClick={() => {
+                  playPopSound();
+                  onOpenAddExpense();
+                }}
                 className="h-8 sm:h-9 px-3 sm:px-4 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-xs font-black text-indigo-500 inline-flex items-center gap-1.5 transition-all outline-none"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -264,7 +281,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
                     {/* Edit / Delete Buttons */}
                     <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <button
-                        onClick={() => onEditExpense(item)}
+                        onClick={() => {
+                          playPopSound();
+                          onEditExpense(item);
+                        }}
                         className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg sm:rounded-xl shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed text-gray-500 hover:text-indigo-500 transition-all outline-none"
                         title="Edit transaction"
                       >

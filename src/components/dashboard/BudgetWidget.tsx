@@ -4,6 +4,7 @@ import { format, differenceInCalendarDays, endOfMonth, isSameMonth, getDaysInMon
 import { TrendingDown, TrendingUp, IndianRupee, Edit2, Check, X, AlertTriangle, ShieldCheck, Clock } from 'lucide-react';
 import type { BudgetSummary } from '../../types/expense';
 import clsx from 'clsx';
+import { playSuccessSound, playPopSound, playClickSound } from '../../utils/sound';
 
 interface BudgetWidgetProps {
   userId: number;
@@ -44,6 +45,7 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
         monthly_budget: val,
         month: monthStr
       });
+      playSuccessSound();
       setIsEditingBudget(false);
       fetchSummary();
     } catch (error) {
@@ -121,6 +123,7 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
             {!isEditingBudget && (
               <button
                 onClick={() => {
+                  playPopSound();
                   setIsEditingBudget(true);
                   setNewBudgetAmount(summary.total_budget > 0 ? summary.total_budget.toString() : "");
                 }}
@@ -151,7 +154,10 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
                 <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
               <button
-                onClick={() => setIsEditingBudget(false)}
+                onClick={() => {
+                  playClickSound();
+                  setIsEditingBudget(false);
+                }}
                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl shadow-neu-flat dark:shadow-neu-flat-dark text-rose-500 hover:shadow-neu-pressed flex items-center justify-center outline-none shrink-0"
               >
                 <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -160,6 +166,7 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
           ) : (
             <div
               onClick={() => {
+                playPopSound();
                 setIsEditingBudget(true);
                 setNewBudgetAmount(summary.total_budget > 0 ? summary.total_budget.toString() : "");
               }}

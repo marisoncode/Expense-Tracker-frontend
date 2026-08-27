@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import type { NavTab } from './Header';
 import clsx from 'clsx';
+import { playClickSound, playPopSound } from '../../utils/sound';
 
 interface MobileNavProps {
   activeTab: NavTab;
@@ -36,7 +37,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({
           return (
             <button
               key={item.key}
-              onClick={() => onTabChange(item.key)}
+              onClick={() => {
+                playClickSound();
+                onTabChange(item.key);
+              }}
               className={clsx(
                 "flex flex-col items-center gap-1 py-1 px-3 rounded-2xl transition-all outline-none",
                 isActive
@@ -61,7 +65,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({
 
         {/* Center Floating Action Button (FAB) */}
         <button
-          onClick={onOpenAddExpense}
+          onClick={() => {
+            playPopSound();
+            onOpenAddExpense();
+          }}
           className="flex flex-col items-center gap-1 -mt-5 outline-none group"
           title="Add Expense"
         >
@@ -77,7 +84,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({
           return (
             <button
               key={item.key}
-              onClick={() => onTabChange(item.key)}
+              onClick={() => {
+                playClickSound();
+                onTabChange(item.key);
+              }}
               className={clsx(
                 "flex flex-col items-center gap-1 py-1 px-3 rounded-2xl transition-all outline-none",
                 isActive

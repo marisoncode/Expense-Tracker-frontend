@@ -5,6 +5,7 @@ import { apiClient } from '../../api/client';
 import type { DailySpendingOverview, DaySummary, Expense } from '../../types/expense';
 import { CategoryIcon } from './CategoryIcon';
 import clsx from 'clsx';
+import { playPopSound, playDeleteSound } from '../../utils/sound';
 
 interface CalendarViewProps {
   userId: number;
@@ -64,6 +65,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   }, [fetchMonthOverview, refreshTrigger]);
 
   const openModal = async (dateStr: string) => {
+    playPopSound();
     setSelectedDate(dateStr);
     fetchDaySummary(dateStr);
   };
@@ -72,6 +74,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     if (!window.confirm('Delete this expense?')) return;
     try {
       await apiClient.delete(`/expenses/${expenseId}`);
+      playDeleteSound();
       if (selectedDate) fetchDaySummary(selectedDate);
       onExpenseAdded();
     } catch (err) {

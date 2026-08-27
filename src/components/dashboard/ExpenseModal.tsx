@@ -6,6 +6,7 @@ import { CATEGORIES, PAYMENT_METHODS } from '../../types/expense';
 import { CategoryIcon } from './CategoryIcon';
 import clsx from 'clsx';
 import { format } from 'date-fns';
+import { playSuccessSound, playClickSound } from '../../utils/sound';
 
 interface ExpenseModalProps {
   isOpen: boolean;
@@ -82,6 +83,7 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
         });
       }
 
+      playSuccessSound();
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -156,7 +158,10 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
                   <button
                     key={cat.name}
                     type="button"
-                    onClick={() => setCategory(cat.name)}
+                    onClick={() => {
+                      playClickSound();
+                      setCategory(cat.name);
+                    }}
                     className={clsx(
                       "h-10 px-3 rounded-2xl flex items-center gap-2 text-xs font-bold transition-all outline-none text-left",
                       isSelected
@@ -193,7 +198,10 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
               </label>
               <select
                 value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                onChange={(e) => {
+                  playClickSound();
+                  setPaymentMethod(e.target.value);
+                }}
                 className="w-full h-11 bg-neu-light dark:bg-neu-dark rounded-2xl shadow-neu-pressed dark:shadow-neu-pressed-dark px-3.5 text-xs font-bold text-gray-800 dark:text-gray-200 outline-none cursor-pointer"
               >
                 {PAYMENT_METHODS.map((pm) => (
