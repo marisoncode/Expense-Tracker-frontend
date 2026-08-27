@@ -42,7 +42,8 @@ function App() {
   };
 
   return (
-    <AppLayout
+    <>
+      <AppLayout
       activeTab={activeTab}
       onTabChange={setActiveTab}
       currentMonth={currentMonth}
@@ -141,18 +142,19 @@ function App() {
           </div>
         )}
       </div>
-
-      {/* Add / Edit Expense Modal */}
-      <ExpenseModal
-        isOpen={isExpenseModalOpen}
-        onClose={handleCloseModal}
-        onSuccess={triggerRefresh}
-        userId={USER_ID}
-        initialDate={selectedInitialDate}
-        expenseToEdit={expenseToEdit}
-      />
     </AppLayout>
-  );
+
+    {/* Add / Edit Expense Modal at Root Level (Above all layout layers) */}
+    <ExpenseModal
+      isOpen={isExpenseModalOpen}
+      onClose={handleCloseModal}
+      onSuccess={triggerRefresh}
+      userId={USER_ID}
+      initialDate={selectedInitialDate}
+      expenseToEdit={expenseToEdit}
+    />
+  </>
+);
 }
 
 export default App;

@@ -4,8 +4,14 @@
 
 @layer base {
   body {
-    background-color: theme('colors.neu.light');
-    color: theme('colors.gray.800');
+    background-color: #e8f3fc;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.18) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.12) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #1e293b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 300ms, color 300ms;
@@ -13,8 +19,14 @@
   }
   
   .dark body {
-    background-color: theme('colors.neu.dark');
-    color: theme('colors.gray.200');
+    background-color: #0c1527;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.16) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.14) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #f1f5f9;
   }
 
   /* Remove default arrows / spinners from Number inputs */
@@ -30,8 +42,8 @@
 
   /* Custom sleek and modern scrollbars with no ugly arrows */
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
@@ -39,12 +51,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(140, 150, 170, 0.35);
+    background: rgba(14, 165, 233, 0.25);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(140, 150, 170, 0.6);
+    background: rgba(14, 165, 233, 0.5);
   }
 
   ::-webkit-scrollbar-button {
@@ -55,7 +67,208 @@
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(140, 150, 170, 0.35) transparent;
+    scrollbar-color: rgba(14, 165, 233, 0.25) transparent;
+  }
+}
+
+/* Claymorphism Custom Classes */
+@layer components {
+  /* Translucent Floating Glass Bubbles */
+  .clay-bubble {
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(224, 242, 254, 0.45) 35%,
+      rgba(56, 189, 248, 0.25) 70%,
+      rgba(14, 165, 233, 0.35) 100%
+    );
+    box-shadow: 
+      inset -10px -10px 25px rgba(56, 189, 248, 0.35),
+      inset 10px 10px 25px rgba(255, 255, 255, 0.9),
+      0 16px 32px -6px rgba(14, 165, 233, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .dark .clay-bubble {
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(56, 189, 248, 0.35) 0%,
+      rgba(14, 165, 233, 0.2) 40%,
+      rgba(30, 58, 138, 0.25) 75%,
+      rgba(15, 23, 42, 0.4) 100%
+    );
+    box-shadow: 
+      inset -10px -10px 25px rgba(14, 165, 233, 0.3),
+      inset 8px 8px 20px rgba(255, 255, 255, 0.25),
+      0 16px 32px -6px rgba(0, 0, 0, 0.5);
+    border: 1.5px solid rgba(56, 189, 248, 0.3);
+  }
+
+  /* 3D Money & Finance Floating Tokens */
+  .clay-coin-3d {
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, #fef08a 0%, #f59e0b 55%, #b45309 100%);
+    box-shadow: 
+      inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+      inset -4px -4px 8px rgba(120, 53, 15, 0.6),
+      0 14px 28px -4px rgba(217, 119, 6, 0.35);
+    border: 2px solid rgba(254, 240, 138, 0.75);
+  }
+
+  .clay-gem-3d {
+    border-radius: 24px;
+    background: radial-gradient(circle at 30% 30%, #a7f3d0 0%, #10b981 50%, #047857 100%);
+    box-shadow: 
+      inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+      inset -4px -4px 8px rgba(6, 78, 59, 0.55),
+      0 14px 28px -4px rgba(16, 185, 129, 0.35);
+    border: 2px solid rgba(167, 243, 208, 0.75);
+  }
+
+  .clay-card-3d {
+    border-radius: 18px;
+    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 60%, #1d4ed8 100%);
+    box-shadow: 
+      inset 2px 2px 4px rgba(255, 255, 255, 0.75),
+      inset -3px -3px 6px rgba(30, 58, 138, 0.55),
+      0 14px 28px -4px rgba(14, 165, 233, 0.35);
+    border: 1.5px solid rgba(186, 230, 253, 0.65);
+  }
+
+  .clay-orb-3d {
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, #e0e7ff 0%, #818cf8 60%, #4338ca 100%);
+    box-shadow: 
+      inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+      inset -4px -4px 8px rgba(49, 46, 129, 0.55),
+      0 14px 28px -4px rgba(99, 102, 241, 0.35);
+    border: 1.5px solid rgba(224, 231, 255, 0.75);
+  }
+
+  /* Clay Card Base */
+  .clay-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(56, 189, 248, 0.45);
+    box-shadow: 
+      12px 16px 32px -4px rgba(14, 165, 233, 0.14),
+      -8px -8px 24px 0px rgba(255, 255, 255, 0.95),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+      inset -3px -3px 8px rgba(186, 230, 253, 0.45);
+  }
+
+  .dark .clay-card {
+    background: rgba(18, 30, 50, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      12px 16px 32px -4px rgba(0, 0, 0, 0.55),
+      -6px -6px 20px 0px rgba(255, 255, 255, 0.03),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.15),
+      inset -3px -3px 8px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Clay Button Base */
+  .clay-btn {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid rgba(56, 189, 248, 0.45);
+    box-shadow: 
+      6px 8px 18px -2px rgba(14, 165, 233, 0.15),
+      -4px -4px 12px 0px rgba(255, 255, 255, 0.9),
+      inset 1.5px 1.5px 2px rgba(255, 255, 255, 0.9),
+      inset -2px -2px 4px rgba(186, 230, 253, 0.4);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .clay-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(14, 165, 233, 0.8);
+    box-shadow: 
+      8px 12px 22px -2px rgba(14, 165, 233, 0.22),
+      -5px -5px 14px 0px rgba(255, 255, 255, 0.95),
+      inset 1.5px 1.5px 2px rgba(255, 255, 255, 0.95),
+      inset -2px -2px 4px rgba(186, 230, 253, 0.5);
+  }
+
+  .clay-btn:active {
+    transform: translateY(0);
+    box-shadow: 
+      inset 3px 3px 6px rgba(14, 165, 233, 0.2),
+      inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+  }
+
+  .dark .clay-btn {
+    background: rgba(26, 42, 68, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      6px 8px 18px -2px rgba(0, 0, 0, 0.45),
+      -3px -3px 10px 0px rgba(255, 255, 255, 0.04),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.15),
+      inset -2px -2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .clay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      8px 12px 22px -2px rgba(0, 0, 0, 0.55),
+      -4px -4px 12px 0px rgba(255, 255, 255, 0.06),
+      inset 1px 1px 2px rgba(255, 255, 255, 0.2),
+      inset -2px -2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .clay-btn:active {
+    transform: translateY(0);
+    box-shadow: 
+      inset 3px 3px 6px rgba(0, 0, 0, 0.6),
+      inset -1px -1px 3px rgba(255, 255, 255, 0.08);
+  }
+
+  /* Clay Inset (Inputs & Recessed wells) */
+  .clay-inset {
+    background: rgba(240, 249, 255, 0.8);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    box-shadow: 
+      inset 3px 3px 6px rgba(14, 165, 233, 0.12),
+      inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  }
+
+  .dark .clay-inset {
+    background: rgba(10, 18, 32, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+      inset 3px 3px 6px rgba(0, 0, 0, 0.55),
+      inset -1px -1px 3px rgba(255, 255, 255, 0.04);
+  }
+
+  /* Clay Primary Vibrant CTA Button */
+  .clay-btn-primary {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #2563eb 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 
+      0 10px 24px -3px rgba(14, 165, 233, 0.45),
+      inset 2px 2px 3px rgba(255, 255, 255, 0.6),
+      inset -2px -2px 4px rgba(3, 105, 161, 0.5);
+    color: #ffffff;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .clay-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 14px 28px -3px rgba(14, 165, 233, 0.55),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+      inset -2px -2px 4px rgba(3, 105, 161, 0.6);
+    filter: brightness(1.05);
+  }
+
+  .clay-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 
+      inset 3px 3px 6px rgba(3, 105, 161, 0.6),
+      inset -2px -2px 4px rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -67,3 +280,4 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+

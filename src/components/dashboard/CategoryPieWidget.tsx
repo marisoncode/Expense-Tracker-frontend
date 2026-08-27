@@ -69,18 +69,18 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
   });
 
   return (
-    <div className="bg-neu-light dark:bg-neu-dark rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 shadow-neu-flat dark:shadow-neu-flat-dark transition-colors duration-300 flex flex-col justify-between h-full">
+    <div className="clay-card rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 transition-colors duration-300 flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex justify-between items-center mb-3 sm:mb-4">
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl shadow-neu-flat dark:shadow-neu-flat-dark flex items-center justify-center">
-            <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-500" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl clay-btn text-sky-500 bg-sky-500/10 flex items-center justify-center">
+            <PieChart className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-black text-gray-800 dark:text-gray-100">
+            <h3 className="text-sm sm:text-base font-black text-slate-800 dark:text-slate-100">
               Expense Distribution
             </h3>
-            <p className="text-[9px] sm:text-[10px] font-semibold text-gray-400">
+            <p className="text-[9px] sm:text-[10px] font-semibold text-slate-500 dark:text-slate-400">
               {format(currentMonth, 'MMMM yyyy')} Category Share
             </p>
           </div>
@@ -89,7 +89,7 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
         {selectedCategory && (
           <button
             onClick={() => onSelectCategory && onSelectCategory('')}
-            className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg sm:rounded-xl shadow-neu-flat dark:shadow-neu-flat-dark text-[10px] sm:text-[11px] font-bold text-indigo-500 hover:shadow-neu-pressed transition-all outline-none"
+            className="px-2.5 sm:px-3 py-1 rounded-xl clay-btn text-[10px] sm:text-[11px] font-bold text-sky-600 dark:text-sky-400 transition-all outline-none"
           >
             Clear Filter
           </button>
@@ -98,14 +98,14 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
 
       {isLoading ? (
         <div className="h-64 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500"></div>
         </div>
       ) : breakdown.length === 0 ? (
         <div className="h-64 flex flex-col items-center justify-center text-center p-6">
-          <div className="w-24 h-24 rounded-full border-4 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center mb-3">
-            <span className="text-xs font-bold text-gray-400">₹0.00</span>
+          <div className="w-24 h-24 rounded-full border-4 border-dashed border-sky-300 dark:border-sky-800 flex items-center justify-center mb-3">
+            <span className="text-xs font-bold text-slate-400">₹0.00</span>
           </div>
-          <p className="text-xs font-semibold text-gray-500">No expenses recorded for this month.</p>
+          <p className="text-xs font-semibold text-slate-500">No expenses recorded for this month.</p>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-5">
@@ -118,7 +118,7 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
                 r={radius}
                 fill="transparent"
                 stroke="currentColor"
-                className="text-gray-300/30 dark:text-gray-700/30"
+                className="text-sky-200/50 dark:text-slate-800/60"
                 strokeWidth={strokeWidth}
               />
 
@@ -150,26 +150,26 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-2">
               {hoveredCategory ? (
                 <div>
-                  <span className="text-[10px] font-black uppercase text-gray-500 truncate block max-w-[90px]">
+                  <span className="text-[10px] font-black uppercase text-slate-500 truncate block max-w-[90px]">
                     {hoveredCategory.category}
                   </span>
-                  <p className="text-base font-black text-gray-800 dark:text-gray-100">
+                  <p className="text-base font-black text-slate-800 dark:text-slate-100">
                     ₹{hoveredCategory.total_spent.toLocaleString('en-IN')}
                   </p>
-                  <span className="text-xs font-extrabold text-indigo-500">
+                  <span className="text-xs font-extrabold text-sky-500">
                     {hoveredCategory.percentage}%
                   </span>
                 </div>
               ) : (
                 <div>
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">
                     Total Spent
                   </span>
-                  <p className="text-base font-black text-gray-800 dark:text-gray-100">
+                  <p className="text-base font-black text-slate-800 dark:text-slate-100">
                     ₹{totalSpent.toLocaleString('en-IN')}
                   </p>
-                  <span className="text-[10px] font-semibold text-gray-500 flex items-center justify-center gap-1">
-                    <Sparkles className="w-2.5 h-2.5 text-indigo-500" />
+                  <span className="text-[10px] font-semibold text-slate-500 flex items-center justify-center gap-1">
+                    <Sparkles className="w-2.5 h-2.5 text-sky-500" />
                     {breakdown.length} {breakdown.length === 1 ? 'Category' : 'Categories'}
                   </span>
                 </div>
@@ -178,7 +178,7 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
           </div>
 
           {/* Category Rows with Progress Bars */}
-          <div className="w-full flex flex-col gap-2.5 max-h-[220px] overflow-y-auto no-scrollbar pr-1">
+          <div className="w-full flex flex-col gap-2.5 max-h-[230px] overflow-y-auto no-scrollbar p-1.5">
             {CATEGORIES.map((cat) => {
               const dataItem = breakdown.find((c) => c.category === cat.name);
               const isSelected = selectedCategory === cat.name;
@@ -195,8 +195,8 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
                   className={clsx(
                     "p-2.5 rounded-2xl cursor-pointer transition-all duration-200",
                     isSelected || isHovered
-                      ? "shadow-neu-pressed dark:shadow-neu-pressed-dark border border-indigo-500/30"
-                      : "shadow-neu-flat dark:shadow-neu-flat-dark hover:shadow-neu-pressed"
+                      ? "clay-inset border border-sky-400/50 bg-sky-50/50 dark:bg-sky-950/20"
+                      : "clay-btn"
                   )}
                 >
                   <div className="flex justify-between items-center mb-1.5">
@@ -206,25 +206,25 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
                         style={{ backgroundColor: cat.hex }}
                       />
                       <CategoryIcon category={cat.name} className="w-3.5 h-3.5" />
-                      <span className="text-xs font-black text-gray-800 dark:text-gray-200">
+                      <span className="text-xs font-black text-slate-800 dark:text-slate-200">
                         {cat.name}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                         ₹{spentAmount.toLocaleString('en-IN')}
                       </span>
-                      <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                      <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full clay-btn text-slate-600 dark:text-slate-400">
                         {percent}%
                       </span>
                     </div>
                   </div>
 
                   {/* Category Progress Bar */}
-                  <div className="w-full h-1.5 rounded-full shadow-neu-pressed dark:shadow-neu-pressed-dark p-0.5 overflow-hidden">
+                  <div className="w-full h-1.5 rounded-full clay-inset p-0.5 overflow-hidden">
                     <div
-                      className="h-full rounded-full transition-all duration-500"
+                      className="h-full rounded-full transition-all duration-500 shadow-sm"
                       style={{
                         width: `${Math.max(percent, spentAmount > 0 ? 3 : 0)}%`,
                         backgroundColor: cat.hex
