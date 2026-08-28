@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '../../api/client';
-import { cachedGet } from '../../api/client';
 import { format } from 'date-fns';
 import type { CategoryBreakdownItem } from '../../types/expense';
 import { CATEGORIES } from '../../types/expense';
@@ -29,19 +28,10 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
 
   const fetchBreakdown = useCallback(async () => {
     setIsLoading(true);
-  const fetchBreakdown = useCallback(async (force = false) => {
-    // Only show spinner if no data has been loaded yet
-    if (breakdown.length === 0) {
-      setIsLoading(true);
-    }
     try {
       const monthStr = format(currentMonth, 'yyyy-MM');
       const { data } = await apiClient.get<CategoryBreakdownItem[]>(
         `/expenses/analytics/categories?user_id=${userId}&month=${monthStr}`
-      const data = await cachedGet<CategoryBreakdownItem[]>(
-        `/expenses/analytics/categories?user_id=${userId}&month=${monthStr}`,
-        undefined,
-        force
       );
       setBreakdown(data);
     } catch (error) {
@@ -50,13 +40,10 @@ export const CategoryPieWidget: React.FC<CategoryPieWidgetProps> = ({
       setIsLoading(false);
     }
   }, [userId, currentMonth]);
-  }, [userId, currentMonth, breakdown.length]);
 
   useEffect(() => {
     fetchBreakdown();
-    fetchBreakdown(refreshTrigger > 0);
   }, [fetchBreakdown, refreshTrigger]);
-
 
   const totalSpent = breakdown.reduce((sum, item) => sum + item.total_spent, 0);
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '../../api/client';
-import { apiClient, cachedGet } from '../../api/client';
 import { format, differenceInCalendarDays, endOfMonth, isSameMonth, getDaysInMonth } from 'date-fns';
 import { TrendingDown, TrendingUp, IndianRupee, Edit2, Check, X, AlertTriangle, ShieldCheck, Clock } from 'lucide-react';
 import type { BudgetSummary } from '../../types/expense';
@@ -25,21 +24,14 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
   const [isSaving, setIsSaving] = useState(false);
 
   const fetchSummary = useCallback(async () => {
-  const fetchSummary = useCallback(async (force = false) => {
     try {
       const monthStr = format(currentMonth, 'yyyy-MM');
       const { data } = await apiClient.get<BudgetSummary>(`/budget/summary?user_id=${userId}&month=${monthStr}`);
-      const data = await cachedGet<BudgetSummary>(
-        `/budget/summary?user_id=${userId}&month=${monthStr}`,
-        undefined,
-        force
-      );
       setSummary(data);
     } catch (error) {
       console.error("Failed to fetch budget summary", error);
     }
   }, [userId, currentMonth]);
-
 
   const handleUpdateBudget = async () => {
     const val = parseFloat(newBudgetAmount);
@@ -65,7 +57,6 @@ export const BudgetWidget: React.FC<BudgetWidgetProps> = ({
 
   useEffect(() => {
     fetchSummary();
-    fetchSummary(refreshTrigger > 0);
   }, [fetchSummary, refreshTrigger]);
 
   if (!summary) {

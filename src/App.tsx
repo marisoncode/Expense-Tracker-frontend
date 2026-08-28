@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useState, lazy, Suspense } from 'react';
 import { AppLayout } from './components/layout/AppLayout';
 import type { NavTab } from './components/layout/Header';
 import { BudgetWidget } from './components/dashboard/BudgetWidget';
@@ -10,27 +9,6 @@ import { ExpenseList } from './components/dashboard/ExpenseList';
 import { CalendarView } from './components/dashboard/CalendarView';
 import { ExpenseModal } from './components/dashboard/ExpenseModal';
 import type { Expense } from './types/expense';
-
-// Lazy load secondary tab views and modals for fast initial paint
-const ExpenseCharts = lazy(() =>
-  import('./components/dashboard/ExpenseCharts').then((m) => ({ default: m.ExpenseCharts }))
-);
-const CalendarView = lazy(() =>
-  import('./components/dashboard/CalendarView').then((m) => ({ default: m.CalendarView }))
-);
-const ExpenseModal = lazy(() =>
-  import('./components/dashboard/ExpenseModal').then((m) => ({ default: m.ExpenseModal }))
-);
-
-const TabLoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-[300px] w-full">
-    <div className="flex flex-col items-center gap-3">
-      <div className="w-8 h-8 rounded-full border-3 border-sky-500 border-t-transparent animate-spin" />
-      <span className="text-xs font-semibold text-slate-400">Loading view...</span>
-    </div>
-  </div>
-);
-
 
 function App() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -132,17 +110,6 @@ function App() {
               onSelectCategory={(cat) => setSelectedCategoryFilter(cat)}
             />
           </div>
-          <Suspense fallback={<TabLoadingFallback />}>
-            <div className="animate-fade-in max-w-5xl mx-auto w-full">
-              <ExpenseCharts
-                userId={USER_ID}
-                currentMonth={currentMonth}
-                refreshTrigger={refreshTrigger}
-                selectedCategory={selectedCategoryFilter}
-                onSelectCategory={(cat) => setSelectedCategoryFilter(cat)}
-              />
-            </div>
-          </Suspense>
         )}
 
         {/* TAB 3: TRANSACTIONS DEDICATED VIEW */}
@@ -173,18 +140,6 @@ function App() {
               onEditExpense={handleEditExpense}
             />
           </div>
-          <Suspense fallback={<TabLoadingFallback />}>
-            <div className="animate-fade-in max-w-4xl mx-auto w-full">
-              <CalendarView
-                userId={USER_ID}
-                currentMonth={currentMonth}
-                refreshTrigger={refreshTrigger}
-                onExpenseAdded={triggerRefresh}
-                onOpenAddExpenseForDate={(d) => handleOpenAddExpense(d)}
-                onEditExpense={handleEditExpense}
-              />
-            </div>
-          </Suspense>
         )}
       </div>
     </AppLayout>
@@ -198,21 +153,8 @@ function App() {
       initialDate={selectedInitialDate}
       expenseToEdit={expenseToEdit}
     />
-    {isExpenseModalOpen && (
-      <Suspense fallback={null}>
-        <ExpenseModal
-          isOpen={isExpenseModalOpen}
-          onClose={handleCloseModal}
-          onSuccess={triggerRefresh}
-          userId={USER_ID}
-          initialDate={selectedInitialDate}
-          expenseToEdit={expenseToEdit}
-        />
-      </Suspense>
-    )}
   </>
 );
 }
 
 export default App;
-

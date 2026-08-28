@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '../../api/client';
-import { apiClient, cachedGet } from '../../api/client';
 import type { MonthlyComparisonResponse } from '../../types/expense';
 import {
   BarChart2,
@@ -31,17 +30,9 @@ export const MonthlyComparisonTable: React.FC<MonthlyComparisonTableProps> = ({
 
   const fetchComparison = useCallback(async () => {
     setIsLoading(true);
-  const fetchComparison = useCallback(async (force = false) => {
-    if (!comparisonData) {
-      setIsLoading(true);
-    }
     try {
       const { data } = await apiClient.get<MonthlyComparisonResponse>(
         `/expenses/analytics/monthly-comparison?user_id=${userId}&year=${selectedYear}`
-      const data = await cachedGet<MonthlyComparisonResponse>(
-        `/expenses/analytics/monthly-comparison?user_id=${userId}&year=${selectedYear}`,
-        undefined,
-        force
       );
       setComparisonData(data);
     } catch (err) {
@@ -50,13 +41,10 @@ export const MonthlyComparisonTable: React.FC<MonthlyComparisonTableProps> = ({
       setIsLoading(false);
     }
   }, [userId, selectedYear]);
-  }, [userId, selectedYear, comparisonData]);
 
   useEffect(() => {
     fetchComparison();
-    fetchComparison(refreshTrigger > 0);
   }, [fetchComparison, refreshTrigger]);
-
 
   const handleExportPDF = () => {
     const baseURL = apiClient.defaults.baseURL || 'http://localhost:8000/api/v1';

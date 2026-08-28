@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
 import { Calendar as CalendarIcon, X, Receipt, Plus, Trash2, Edit3 } from 'lucide-react';
 import { apiClient } from '../../api/client';
-import { apiClient, cachedGet } from '../../api/client';
 import type { DailySpendingOverview, DaySummary, Expense } from '../../types/expense';
 import { CategoryIcon } from './CategoryIcon';
 import clsx from 'clsx';
@@ -35,15 +34,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
   const fetchMonthOverview = useCallback(async () => {
-  const fetchMonthOverview = useCallback(async (force = false) => {
     try {
       const monthStr = format(currentMonth, 'yyyy-MM');
       const { data } = await apiClient.get<DailySpendingOverview>(
         `/calendar/month-overview?user_id=${userId}&month=${monthStr}`
-      const data = await cachedGet<DailySpendingOverview>(
-        `/calendar/month-overview?user_id=${userId}&month=${monthStr}`,
-        undefined,
-        force
       );
       setMonthOverview(data);
     } catch (error) {
@@ -52,15 +46,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   }, [userId, currentMonth]);
 
   const fetchDaySummary = async (dateStr: string) => {
-  const fetchDaySummary = async (dateStr: string, force = false) => {
     setIsLoadingDay(true);
     try {
       const { data } = await apiClient.get<DaySummary>(
         `/calendar/day-summary?user_id=${userId}&target_date=${dateStr}`
-      const data = await cachedGet<DaySummary>(
-        `/calendar/day-summary?user_id=${userId}&target_date=${dateStr}`,
-        undefined,
-        force
       );
       setDaySummary(data);
     } catch (e) {
@@ -73,9 +62,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
   useEffect(() => {
     fetchMonthOverview();
-    fetchMonthOverview(refreshTrigger > 0);
   }, [fetchMonthOverview, refreshTrigger]);
-
 
   const openModal = async (dateStr: string) => {
     playPopSound();

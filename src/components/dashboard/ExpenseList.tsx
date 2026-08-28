@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '../../api/client';
-import { apiClient, cachedGet } from '../../api/client';
 import { format } from 'date-fns';
 import type { Expense } from '../../types/expense';
 import { CATEGORIES } from '../../types/expense';
@@ -47,10 +46,6 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
 
   const fetchExpenses = useCallback(async () => {
     setIsLoading(true);
-  const fetchExpenses = useCallback(async (force = false) => {
-    if (expenses.length === 0) {
-      setIsLoading(true);
-    }
     try {
       const monthStr = format(currentMonth, 'yyyy-MM');
       let url = `/expenses?user_id=${userId}&month=${monthStr}&sort_by=${sortBy}`;
@@ -62,7 +57,6 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
       }
 
       const { data } = await apiClient.get<Expense[]>(url);
-      const data = await cachedGet<Expense[]>(url, undefined, force);
       setExpenses(data);
     } catch (error) {
       console.error('Failed to fetch expenses', error);
@@ -70,13 +64,10 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
       setIsLoading(false);
     }
   }, [userId, currentMonth, searchQuery, categoryFilter, sortBy]);
-  }, [userId, currentMonth, searchQuery, categoryFilter, sortBy, expenses.length]);
 
   useEffect(() => {
     fetchExpenses();
-    fetchExpenses(refreshTrigger > 0);
   }, [fetchExpenses, refreshTrigger]);
-
 
   const handleDelete = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this expense?')) return;
