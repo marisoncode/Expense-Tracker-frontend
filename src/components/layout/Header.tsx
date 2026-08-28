@@ -62,10 +62,15 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-20 gap-2 sm:gap-3">
           {/* Logo */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl clay-btn flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-600 text-white shadow-clay-primary">
-              <IndianRupee className="h-4 w-4 sm:h-5 sm:w-5 text-white stroke-[2.5]" />
+            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl clay-btn overflow-hidden p-0.5 flex items-center justify-center bg-gradient-to-br from-sky-400 to-blue-600 shadow-clay-primary">
+              <img
+                src="/icon-192.png"
+                alt="SpendWise"
+                className="w-full h-full object-cover rounded-lg sm:rounded-xl"
+              />
             </div>
             <div>
+
               <h1 className="text-base sm:text-lg md:text-xl font-black bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-300 bg-clip-text text-transparent tracking-tight leading-tight">
                 SpendWise
               </h1>
