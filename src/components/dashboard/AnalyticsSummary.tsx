@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { apiClient } from '../../api/client';
+import { cachedGet } from '../../api/client';
 import { format } from 'date-fns';
 import type { MonthlyStats } from '../../types/expense';
 import { CalendarDays, Flame, Receipt, PieChart } from 'lucide-react';
@@ -19,10 +20,15 @@ export const AnalyticsSummary: React.FC<AnalyticsSummaryProps> = ({
   const [stats, setStats] = useState<MonthlyStats | null>(null);
 
   const fetchStats = useCallback(async () => {
+  const fetchStats = useCallback(async (force = false) => {
     try {
       const monthStr = format(currentMonth, 'yyyy-MM');
       const { data } = await apiClient.get<MonthlyStats>(
         `/expenses/analytics/stats?user_id=${userId}&month=${monthStr}`
+      const data = await cachedGet<MonthlyStats>(
+        `/expenses/analytics/stats?user_id=${userId}&month=${monthStr}`,
+        undefined,
+        force
       );
       setStats(data);
     } catch (error) {
@@ -32,7 +38,9 @@ export const AnalyticsSummary: React.FC<AnalyticsSummaryProps> = ({
 
   useEffect(() => {
     fetchStats();
+    fetchStats(refreshTrigger > 0);
   }, [fetchStats, refreshTrigger]);
+
 
   if (!stats) return null;
 

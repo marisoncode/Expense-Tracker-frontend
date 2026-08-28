@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '../../api/client';
+import { apiClient, cachedGet } from '../../api/client';
 import {
   format,
   addDays,
@@ -76,6 +77,10 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
   // Fetch Analytics Data
   const fetchAnalytics = useCallback(async () => {
     setIsLoading(true);
+  const fetchAnalytics = useCallback(async (force = false) => {
+    if (categoriesData.length === 0) {
+      setIsLoading(true);
+    }
     try {
       let catUrl = `/expenses/analytics/categories?user_id=${userId}&timeframe=${filterMode}`;
       let trendUrl = `/expenses/analytics/trends?user_id=${userId}&timeframe=${filterMode}`;
@@ -99,20 +104,28 @@ export const ExpenseCharts: React.FC<ExpenseChartsProps> = ({
       const [catRes, trendRes] = await Promise.all([
         apiClient.get<CategoryBreakdownItem[]>(catUrl),
         apiClient.get<TrendAnalytics>(trendUrl)
+      const [catData, tData] = await Promise.all([
+        cachedGet<CategoryBreakdownItem[]>(catUrl, undefined, force),
+        cachedGet<TrendAnalytics>(trendUrl, undefined, force)
       ]);
 
       setCategoriesData(catRes.data);
       setTrendData(trendRes.data);
+      setCategoriesData(catData);
+      setTrendData(tData);
     } catch (err) {
       console.error('Failed to fetch filtered chart analytics', err);
     } finally {
       setIsLoading(false);
     }
   }, [userId, filterMode, selectedDay, selectedMonth, selectedYear, startDate, endDate]);
+  }, [userId, filterMode, selectedDay, selectedMonth, selectedYear, startDate, endDate, categoriesData.length]);
 
   useEffect(() => {
     fetchAnalytics();
+    fetchAnalytics(refreshTrigger > 0);
   }, [fetchAnalytics, refreshTrigger]);
+
 
   const totalPeriodSpent = categoriesData.reduce((sum, item) => sum + item.total_spent, 0);
   const totalTxCount = categoriesData.reduce((sum, item) => sum + item.transaction_count, 0);
