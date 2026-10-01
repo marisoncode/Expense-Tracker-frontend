@@ -91,6 +91,8 @@ export const CATEGORIES = [
   { name: 'Dress', icon: 'Shirt', color: 'text-pink-500', hex: '#ec4899', bg: 'bg-pink-500/10' },
   { name: 'Accessories', icon: 'Sparkles', color: 'text-cyan-500', hex: '#06b6d4', bg: 'bg-cyan-500/10' },
   { name: 'Cinema', icon: 'Film', color: 'text-rose-500', hex: '#f43f5e', bg: 'bg-rose-500/10' },
+  { name: 'Mobile Recharges', icon: 'Smartphone', color: 'text-blue-500', hex: '#3b82f6', bg: 'bg-blue-500/10' },
+  { name: 'Snacks', icon: 'Cookie', color: 'text-orange-500', hex: '#f97316', bg: 'bg-orange-500/10' },
   { name: 'Other Expenses', icon: 'MoreHorizontal', color: 'text-purple-500', hex: '#8b5cf6', bg: 'bg-purple-500/10' },
 ] as const;
 
